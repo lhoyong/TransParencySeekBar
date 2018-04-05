@@ -3,43 +3,37 @@ package com.github.lhoyong.transparencyseekbar
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 
-/**
- * Created by ihoyong on 2018. 4. 4..
- */
+
 class TransParencySeekBar @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr), ProgressListener {
 
-    override fun invoke(progress: Int) {
-        this.progress = progress
+    // attr
+    private val a = attrs.let { context.obtainStyledAttributes(attrs, R.styleable.TransParencySeekBar, defStyleAttr, defStyleAttr) }
 
-        invalidate()
-    }
+    private var thumbX: Float = 0F
 
-    private val a = attrs?.let { context.obtainStyledAttributes(attrs, R.styleable.TransParencySeekBar, defStyleAttr, defStyleAttr) }
-
-    var listener: (ProgressListener)? = null
-
-    var progressBackgroundColor: Int = a!!.getColor(R.styleable.TransParencySeekBar_backgroundColor, Color.BLUE)
-    var progressColor: Int = a!!.getColor(R.styleable.TransParencySeekBar_progressColor, Color.WHITE)
-    var maxProgress: Int = a!!.getInteger(R.styleable.TransParencySeekBar_maxProgress, 100)
-    var progress: Int = a!!.getInteger(R.styleable.TransParencySeekBar_progress, 0)
-
-    var isPress: Boolean = true
-    var thumbX: Float = 0F
-
-    private val thumb: Drawable = a?.getDrawable(R.styleable.TransParencySeekBar_thumb)
+    val thumb: Drawable = a.getDrawable(R.styleable.TransParencySeekBar_thumb)
             ?: resources.getDrawable(R.drawable.thumb)
+
+    var progressBackgroundColor: Int = a.getColor(R.styleable.TransParencySeekBar_backgroundColor, context.resources.getColor(R.color.backgroundColor))
+
+    var progressColor: Int = a.getColor(R.styleable.TransParencySeekBar_progressColor, context.resources.getColor(R.color.progressColor))
+
+    var maxProgress: Int = a.getInteger(R.styleable.TransParencySeekBar_maxProgress, 100)
+
+    var progress: Int = a.getInteger(R.styleable.TransParencySeekBar_progress, 0)
+
+    // Use thumb
+    var mEnabled: Boolean = a.getBoolean(R.styleable.TransParencySeekBar_enable, true)
 
     init {
         a?.recycle()
@@ -47,96 +41,84 @@ class TransParencySeekBar @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (isPress) {
+        if (mEnabled) {
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    Log.e("actiondown", "${event.x} ${event.y}")
-                }
-                MotionEvent.ACTION_MOVE -> thumbPosition(event.x)
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-
-                }
+                MotionEvent.ACTION_DOWN -> checkTouchPosition(event.x)
+                MotionEvent.ACTION_MOVE ->   if (isPressed) changeProgress(event.x)
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->  isPressed = false
             }
         }
-
-        return isPress
+        return mEnabled
     }
 
+    @SuppressLint("DrawAllocation")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
         val height = View.getDefaultSize(suggestedMinimumHeight, heightMeasureSpec)
         val width = View.getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
 
+        thumbX = getThumbPosition(width)
         setMeasuredDimension(width, height)
-
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    // 이미지 그리는곳
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        backgroundDraw(canvas)
-        progressDraw(canvas)
+        drawBackground(canvas)
+        drawProgress(canvas)
+        if (mEnabled) drawThumb(canvas)
+    }
+
+    override fun drawableStateChanged() {
+        super.drawableStateChanged()
 
     }
 
-    /*override fun drawableStateChanged() {
-        super.drawableStateChanged()
-        Log.e("adsf", "${thumb.isStateful}")
-        if (thumb.isStateful) {
-            thumb.state = drawableState
-        }
+    override fun invoke(progress: Int) {
+        this.progress = progress
+
         invalidate()
+    }
 
-    }*/
-
-    // 배경
-    private fun backgroundDraw(canvas: Canvas) {
+    // draw Background
+    private fun drawBackground(canvas: Canvas) {
         val paint: Paint = Paint()
         paint.color = progressBackgroundColor
 
         canvas.drawRect(0F, 0F, canvas.width.toFloat(), canvas.height.toFloat(), paint)
     }
 
-    private fun progressDraw(canvas: Canvas) {
+    // draw Progress
+    private fun drawProgress(canvas: Canvas) {
         val paint: Paint = Paint()
         paint.color = progressColor
 
-        val wid = TransWidth(canvas.width)
-        canvas.drawRect(0.toFloat(), 0.toFloat(), wid, canvas.height.toFloat(), paint)
-
-        thumbDraw(canvas)
+        canvas.drawRect(0.toFloat(), 0.toFloat(), thumbX, canvas.height.toFloat(), paint)
     }
 
     // thumb Draw
-    private fun thumbDraw(canvas: Canvas) {
-
-        thumb.setBounds(TransWidth(canvas.width).toInt(), 0, TransWidth(canvas.width).toInt() + 10, canvas.height)
+    private fun drawThumb(canvas: Canvas) {
+        thumb.setBounds(thumbX.toInt(), 0, thumbX.toInt() + 10, canvas.height)
         thumb.draw(canvas)
     }
 
-    // 퍼센테이지 구하기
-    private fun TransWidth(defaultWidth: Int): Float {
+    // get Thumb X Position
+    private fun getThumbPosition(width: Int): Float {
         val percent = (progress.toFloat() / maxProgress.toFloat()) * 100
-        val width = (defaultWidth.toFloat() / 100) * percent
-        thumbX = width
-        return width.toFloat()
+        return (width.toFloat() / 100) * percent
     }
-    private fun changeProgress(){
-        val a = (thumbX / 1440) * 100
-        val b = (maxProgress / 100) *a
-        progress = b.toInt()
+
+    // check for Touch Position
+    private fun checkTouchPosition(x: Float) {
+        if (thumbX + 20 >= x && thumbX - 20 <= x) isPressed = true
+        else isPressed = false
+    }
+
+    // change Progress
+    private fun changeProgress(x: Float) {
+        progress = ((maxProgress / 100) * ((thumbX / measuredWidth) * 100)).toInt()
+        thumbX = x
         invalidate()
     }
-
-    private fun thumbPosition(x: Float) {
-        Log.e("thumbPosition", "$progress $x $thumbX ${TransWidth(x.toInt())}")
-        if (thumbX + 10 > x || thumbX - 10 < x) {
-            thumbX = x
-            changeProgress()
-
-        }
-    }
-
-
 }
