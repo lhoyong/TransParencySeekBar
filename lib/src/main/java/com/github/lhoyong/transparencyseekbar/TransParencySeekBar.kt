@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 
@@ -35,6 +36,12 @@ class TransParencySeekBar @JvmOverloads constructor(
     // Use thumb
     var mEnabled: Boolean = a.getBoolean(R.styleable.TransParencySeekBar_enable, true)
 
+
+    /*     test value       */
+    var touchX: Float = 0F
+
+    /* ---- test value --- */
+
     init {
         a?.recycle()
     }
@@ -43,9 +50,12 @@ class TransParencySeekBar @JvmOverloads constructor(
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (mEnabled) {
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> checkTouchPosition(event.x)
-                MotionEvent.ACTION_MOVE ->   if (isPressed) changeProgress(event.x)
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->  isPressed = false
+                MotionEvent.ACTION_DOWN -> isPressed = true
+                MotionEvent.ACTION_MOVE -> if (isPressed) changeProgress(event.x)
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    isPressed = false
+                    touchX = 0F
+                }
             }
         }
         return mEnabled
@@ -53,7 +63,6 @@ class TransParencySeekBar @JvmOverloads constructor(
 
     @SuppressLint("DrawAllocation")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-
         val height = View.getDefaultSize(suggestedMinimumHeight, heightMeasureSpec)
         val width = View.getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
 
@@ -109,16 +118,23 @@ class TransParencySeekBar @JvmOverloads constructor(
         return (width.toFloat() / 100) * percent
     }
 
-    // check for Touch Position
-    private fun checkTouchPosition(x: Float) {
-        if (thumbX + 20 >= x && thumbX - 20 <= x) isPressed = true
-        else isPressed = false
-    }
-
     // change Progress
     private fun changeProgress(x: Float) {
-        progress = ((maxProgress / 100) * ((thumbX / measuredWidth) * 100)).toInt()
-        thumbX = x
+        if (touchX == 0F) touchX = x
+        else if (thumbX < 0) {
+            thumbX = 0F
+            progress = 0
+        } else if (thumbX > measuredWidth) {
+            thumbX = measuredWidth.toFloat()
+            progress = maxProgress
+        } else {
+            progress = ((maxProgress.toFloat() / 100) * ((thumbX / measuredWidth) * 100)).toInt()
+            thumbX += x - touchX
+
+            if (x >= touchX) touchX += x - touchX
+            else touchX -= touchX - x
+        }
+
         invalidate()
     }
 }
