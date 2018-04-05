@@ -16,8 +16,6 @@ class MainActivity : AppCompatActivity() {
 
         tran.progress = p
         tran.maxProgress = 240
-
-
     }
 
     override fun onStop() {

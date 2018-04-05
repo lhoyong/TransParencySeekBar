@@ -7,6 +7,8 @@
     android:orientation="vertical"
     tools:context="com.github.lhoyong.transparencyseekbar.MainActivity">
 
+
+
     <com.github.lhoyong.transparencyseekbar.TransParencySeekBar
         android:id="@+id/tran"
         android:layout_width="match_parent"
