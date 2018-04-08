@@ -1,5 +1,17 @@
 # TransParencySeekBar
 
+## Intro
+
+* Default Style
+
+![defstyle](https://github.com/lhoyong/TransParencySeekBar/blob/master/gif/def.mp4)
+
+* Clickable Style
+
+![clickable](https://github.com/lhoyong/TransParencySeekBar/blob/master/gif/clickable.gif)
+
+----
+
 ## How to use
 
 * Add your project
