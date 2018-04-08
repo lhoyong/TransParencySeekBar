@@ -4,7 +4,7 @@
 
 * Default Style
 
-![defstyle](https://github.com/lhoyong/TransParencySeekBar/blob/master/gif/def.gif)
+![defstyle](https://github.com/lhoyong/TransParencySeekBar/blob/master/gif/defStyle.gif)
 
 * Clickable Style
 
