@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 
@@ -20,7 +19,9 @@ class TransParencySeekBar @JvmOverloads constructor(
     // attr
     private val a = attrs.let { context.obtainStyledAttributes(attrs, R.styleable.TransParencySeekBar, defStyleAttr, defStyleAttr) }
 
+    // thumb & touch X Position
     private var thumbX: Float = 0F
+    private var touchX: Float = 0F
 
     val thumb: Drawable = a.getDrawable(R.styleable.TransParencySeekBar_thumb)
             ?: resources.getDrawable(R.drawable.thumb)
@@ -33,14 +34,13 @@ class TransParencySeekBar @JvmOverloads constructor(
 
     var progress: Int = a.getInteger(R.styleable.TransParencySeekBar_progress, 0)
 
-    // Use thumb
+    /* true: use Thumb  */
     var mEnabled: Boolean = a.getBoolean(R.styleable.TransParencySeekBar_enable, true)
 
-
-    /*     test value       */
-    var touchX: Float = 0F
-
-    /* ---- test value --- */
+    /*thumb Click
+    *  true :  MotionEvent Pressed thumb Visible
+    *  false : thumb Always Visible */
+    var thumbClickable: Boolean = a.getBoolean(R.styleable.TransParencySeekBar_thumbClickable, false)
 
     init {
         a?.recycle()
@@ -76,7 +76,10 @@ class TransParencySeekBar @JvmOverloads constructor(
 
         drawBackground(canvas)
         drawProgress(canvas)
-        if (mEnabled) drawThumb(canvas)
+        if (mEnabled) {
+            if(!thumbClickable) drawThumb(canvas)
+            else if(thumbClickable&& isPressed) drawThumb(canvas)
+        }
     }
 
     override fun drawableStateChanged() {
@@ -137,4 +140,5 @@ class TransParencySeekBar @JvmOverloads constructor(
 
         invalidate()
     }
+
 }

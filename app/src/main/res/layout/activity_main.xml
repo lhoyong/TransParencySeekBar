@@ -8,12 +8,44 @@
     tools:context="com.github.lhoyong.transparencyseekbar.MainActivity">
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Default Style"
+        android:textColor="#000000"
+        android:textSize="20sp" />
 
     <com.github.lhoyong.transparencyseekbar.TransParencySeekBar
-        android:id="@+id/tran"
+        android:id="@+id/defStyle"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginTop="10dp"
         app:backgroundColor="#44000000"
-        app:progressColor="#66000000" />
+        app:maxProgress="300"
+        app:progress="150"
+        app:progressColor="#66000000"
+        app:thumbClickable="false" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Clickable Style"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <com.github.lhoyong.transparencyseekbar.TransParencySeekBar
+        android:id="@+id/clickableStyle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        app:backgroundColor="#44000000"
+        app:maxProgress="300"
+        app:progress="150"
+        app:progressColor="#66000000"
+        app:thumbClickable="true" />
 
 </LinearLayout>
