@@ -66,7 +66,7 @@ class TransParencySeekBar @JvmOverloads constructor(
         val height = View.getDefaultSize(suggestedMinimumHeight, heightMeasureSpec)
         val width = View.getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
 
-        thumbX = getThumbPosition(width)
+        thumbX = getThumbPosition()
         setMeasuredDimension(width, height)
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
@@ -88,8 +88,8 @@ class TransParencySeekBar @JvmOverloads constructor(
     }
 
     override fun invoke(progress: Int) {
-        this.progress = progress
-
+        this.progress = progress    // Progress Update
+        thumbX = getThumbPosition() // thumb Position Update
         invalidate()
     }
 
@@ -116,9 +116,9 @@ class TransParencySeekBar @JvmOverloads constructor(
     }
 
     // get Thumb X Position
-    private fun getThumbPosition(width: Int): Float {
+    private fun getThumbPosition(): Float {
         val percent = (progress.toFloat() / maxProgress.toFloat()) * 100
-        return (width.toFloat() / 100) * percent
+        return (measuredWidth.toFloat() / 100) * percent
     }
 
     // change Progress
