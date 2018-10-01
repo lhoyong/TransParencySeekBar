@@ -46,6 +46,8 @@ build.gradle (app)
 
 ## Attributes
 
+[attr.xml](https://github.com/lhoyong/TransParencySeekBar/blob/master/lib/src/main/res/values/attrs.xml)
+
 | Name  | Type  | Example | Deafult |
 | :------------ |:---------------:| -----:        | -----: |
 | enable     | Boolean | app:enable="true"        | true   |
