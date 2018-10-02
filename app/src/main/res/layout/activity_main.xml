@@ -22,9 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
-        app:maxProgress="300"
-        app:progress="150"
-        app:thumbClickable="false" />
+        app:tb_maxProgress="300"
+        app:tb_progress="150"
+        app:tb_thumbClickable="false" />
 
     <TextView
         android:layout_width="match_parent"
@@ -40,8 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
-        app:maxProgress="300"
-        app:progress="150"
-        app:thumbClickable="true" />
+        app:tb_maxProgress="300"
+        app:tb_progress="150"
+        app:tb_thumbClickable="true" />
 
 </LinearLayout>

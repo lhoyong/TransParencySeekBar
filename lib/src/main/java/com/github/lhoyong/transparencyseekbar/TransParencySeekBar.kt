@@ -23,24 +23,24 @@ class TransParencySeekBar @JvmOverloads constructor(
     private var thumbX: Float = 0F
     private var touchX: Float = 0F
 
-    val thumb: Drawable = a.getDrawable(R.styleable.TransParencySeekBar_thumb)
+    val thumb: Drawable = a.getDrawable(R.styleable.TransParencySeekBar_tb_thumb)
             ?: resources.getDrawable(R.drawable.thumb)
 
-    var progressBackgroundColor: Int = a.getColor(R.styleable.TransParencySeekBar_backgroundColor, context.resources.getColor(R.color.backgroundColor))
+    var progressBackgroundColor: Int = a.getColor(R.styleable.TransParencySeekBar_tb_backgroundColor, context.resources.getColor(R.color.backgroundColor))
 
-    var progressColor: Int = a.getColor(R.styleable.TransParencySeekBar_progressColor, context.resources.getColor(R.color.progressColor))
+    var progressColor: Int = a.getColor(R.styleable.TransParencySeekBar_tb_progressColor, context.resources.getColor(R.color.progressColor))
 
-    var maxProgress: Int = a.getInteger(R.styleable.TransParencySeekBar_maxProgress, 100)
+    var maxProgress: Int = a.getInteger(R.styleable.TransParencySeekBar_tb_maxProgress, 100)
 
-    var progress: Int = a.getInteger(R.styleable.TransParencySeekBar_progress, 0)
+    var progress: Int = a.getInteger(R.styleable.TransParencySeekBar_tb_progress, 0)
 
     /* true: use Thumb  */
-    var mEnabled: Boolean = a.getBoolean(R.styleable.TransParencySeekBar_enable, true)
+    var mEnabled: Boolean = a.getBoolean(R.styleable.TransParencySeekBar_tb_enable, true)
 
     /*thumb Click
     *  true :  MotionEvent Pressed thumb Visible
     *  false : thumb Always Visible */
-    var thumbClickable: Boolean = a.getBoolean(R.styleable.TransParencySeekBar_thumbClickable, false)
+    var thumbClickable: Boolean = a.getBoolean(R.styleable.TransParencySeekBar_tb_thumbClickable, false)
 
     init {
         a?.recycle()

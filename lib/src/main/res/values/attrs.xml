@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="TransParencySeekBar">
-       <attr name="enable" format="boolean"/>
-        <attr name="backgroundColor" format="color" />
-        <attr name="progressColor" format="color" />
-        <attr name="maxProgress" format="integer"/>
-        <attr name="thumb" format="reference"/>
-        <attr name="progress" format="integer"/>
-        <attr name="thumbClickable" format="boolean"/>
+       <attr name="tb_enable" format="boolean"/>
+        <attr name="tb_backgroundColor" format="color" />
+        <attr name="tb_progressColor" format="color" />
+        <attr name="tb_maxProgress" format="integer"/>
+        <attr name="tb_thumb" format="reference"/>
+        <attr name="tb_progress" format="integer"/>
+        <attr name="tb_thumbClickable" format="boolean"/>
     </declare-styleable>
 </resources>
