@@ -30,7 +30,7 @@ build.gradle (app)
 <pre>
     <code>
         dependencies {
-            implementation 'com.github.lhoyong:TransParencySeekBar:0.0.4'
+            implementation 'com.github.lhoyong:TransParencySeekBar:0.1.0'
         }
     </code>
 </pre>
