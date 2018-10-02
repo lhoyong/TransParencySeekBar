@@ -50,10 +50,10 @@ build.gradle (app)
 
 | Name  | Type  | Example | Deafult |
 | :------------ |:---------------:| -----:        | -----: |
-| enable     | Boolean | app:enable="true"        | true   |
-| backgroundColor      | Color        |   app:backgroundColor="#ffffff" | #44000000
-| progressColor | Color       |    app:progressColor="#000000"        | #66000000
-| maxProgress     | Integer | app:maxProgress="300"        | 100   |
-| progress     | Integer | app:progress="150"        | 0   |
-| thumb     | Reference | app:thumb="@drawable/thumb"        |    |
-| thumbClickable     | Boolean | app:thumbClickable="true"        | false   |
+| tb_enable | Boolean | app:enable="true"        | true   |
+| tb_backgroundColor      | Color        |   app:backgroundColor="#ffffff" | #44000000
+| tb_progressColor | Color       |    app:progressColor="#000000"        | #66000000
+| tb_maxProgress     | Integer | app:maxProgress="300"        | 100   |
+| tb_progress     | Integer | app:progress="150"        | 0   |
+| tb_thumb     | Reference | app:thumb="@drawable/thumb"        |    |
+| tb_thumbClickable     | Boolean | app:thumbClickable="true"        | false   |
